@@ -1,0 +1,74 @@
+{
+  "compatibility_date": "2026-11-10",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "directory": "./public",
+    "binding": "STATIC"
+  },
+  "name": "fanflare-mcp-local",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "fanflare-local",
+      "database_id": "00000000-0000-4000-8000-000000000001"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "fanflare-local"
+    }
+  ],
+  "images": {
+    "binding": "IMAGES"
+  },
+  "send_email": [
+    {
+      "name": "MAIL"
+    }
+  ],
+  "vars": {
+    "ORIGIN": "http://127.0.0.1:8787",
+    "MAIL_FROM": "reader@fanflare.test",
+    "MAINTENANCE": "false"
+  },
+  "ratelimits": [
+    {
+      "name": "REQUEST_LIMIT",
+      "namespace_id": "941001",
+      "simple": {
+        "limit": 100000,
+        "period": 60
+      }
+    },
+    {
+      "name": "AUTH_LIMIT",
+      "namespace_id": "941002",
+      "simple": {
+        "limit": 100000,
+        "period": 60
+      }
+    },
+    {
+      "name": "WRITE_LIMIT",
+      "namespace_id": "941003",
+      "simple": {
+        "limit": 100000,
+        "period": 60
+      }
+    },
+    {
+      "name": "IMAGE_LIMIT",
+      "namespace_id": "941004",
+      "simple": {
+        "limit": 100000,
+        "period": 60
+      }
+    }
+  ],
+  "main": "src/mcp-local.ts",
+  "workers_dev": false,
+  "preview_urls": false
+}

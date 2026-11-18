@@ -1,0 +1,12 @@
+node_modules/
+.wrangler/
+.dev.vars*
+.env*
+!.env.example
+dist/
+.eve/
+.workflow-data/
+.local/
+.DS_Store
+.output/
+apps/web/public/journal-media/

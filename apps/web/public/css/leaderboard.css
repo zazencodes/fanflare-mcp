@@ -1,0 +1,163 @@
+.leaderboard-page {
+  max-width: 1000px;
+  margin: auto;
+}
+.leaderboard-page .feature-heading {
+  margin-bottom: 40px;
+}
+.leaderboard-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.leaderboard-head p {
+  font-size: 12px;
+  max-width: 320px;
+}
+.reader-ranks {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  overflow: hidden;
+}
+.reader-ranks li {
+  display: flex;
+  align-items: center;
+  padding: 24px 28px;
+  gap: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.reader-ranks li:last-child {
+  border: 0;
+}
+.reader-ranks li:first-child {
+  background: var(--gradient-wash);
+}
+.reader-rank {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  color: var(--muted);
+  width: 36px;
+}
+.rank-person {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+.rank-person > span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.rank-person small {
+  overflow-wrap: anywhere;
+}
+.rank-person strong {
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+.rank-person small,
+.rank-level small,
+.rank-sparks small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 4px;
+}
+.rank-level {
+  font-size: 13px;
+  width: 160px;
+}
+.rank-sparks {
+  font-size: 18px;
+  color: var(--spark);
+  text-align: right;
+  min-width: 100px;
+}
+.leaderboard-note {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 650px;
+  margin: 28px auto;
+  text-align: center;
+}
+@media (max-width: 767.98px) {
+  .leaderboard-head {
+    display: block;
+  }
+  .leaderboard-head p {
+    max-width: none;
+    margin-top: 18px;
+  }
+  .reader-ranks li {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr) 68px;
+    grid-template-rows: auto auto;
+    align-items: center;
+    padding: 18px 14px;
+    gap: 4px 12px;
+  }
+  .reader-rank {
+    font-size: 24px;
+    width: 22px;
+    grid-column: 1;
+    grid-row: 1 / 3;
+  }
+  .rank-person {
+    grid-column: 2;
+    grid-row: 1;
+    gap: 10px;
+  }
+  .rank-person .avatar {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+  .rank-person > span:last-child {
+    min-width: 0;
+  }
+  .rank-person strong {
+    font-size: 14px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .rank-person small {
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .rank-level {
+    grid-column: 2;
+    grid-row: 2;
+    width: auto;
+    margin: 0 0 0 54px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 6px;
+    align-items: center;
+    font-size: 11px;
+  }
+  .rank-level small {
+    font-size: 11px;
+    margin: 0;
+  }
+  .rank-sparks {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    font-size: 15px;
+    min-width: 0;
+    white-space: nowrap;
+  }
+  .rank-sparks small {
+    font-size: 10px;
+  }
+}

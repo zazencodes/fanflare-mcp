@@ -1,0 +1,56 @@
+.notification-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.notification {
+  border-bottom: 1px solid var(--line);
+}
+.notification a {
+  display: flex;
+  gap: var(--space-5);
+  align-items: flex-start;
+  padding: var(--space-6) var(--space-4);
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+}
+.notification a:hover {
+  background: var(--surface-hover);
+}
+.notification.is-new {
+  background: var(--accent-wash);
+}
+.notification-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  height: 44px;
+  background: var(--accent-soft);
+  border-radius: 50%;
+  color: var(--accent);
+}
+.notification-copy {
+  display: grid;
+  gap: var(--space-1);
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.notification-copy time {
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+@media (max-width: 767.98px) {
+  .notification a {
+    padding: var(--space-5) var(--space-2);
+    gap: var(--space-3);
+  }
+  .notification .tag {
+    font-size: var(--text-2xs);
+  }
+  .notification-copy strong {
+    font-size: var(--text-ui);
+  }
+}

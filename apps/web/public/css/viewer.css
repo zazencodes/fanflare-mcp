@@ -1,0 +1,525 @@
+/* Artwork viewer. .viewer-frame is also the permalink page layout (ui ViewerFrame). */
+.viewer-frame {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.viewer-media {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 420px;
+  margin: 0;
+  background: var(--surface-sunken);
+}
+.viewer-media img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+}
+.viewer-panel {
+  min-width: 0;
+  padding: var(--space-7) var(--space-6);
+  border-left: 1px solid var(--line);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.viewer-panel > :first-child,
+.viewer-handle + * {
+  margin-top: 0;
+}
+.viewer-handle {
+  display: none;
+}
+@media (max-width: 767.98px) {
+  .viewer-frame {
+    grid-template-columns: 1fr;
+    margin-inline: calc(-1 * var(--gutter));
+    border-inline: 0;
+    border-radius: 0;
+  }
+  .viewer-media {
+    min-height: 0;
+  }
+  .viewer-panel {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    padding: var(--space-6) var(--gutter);
+  }
+}
+
+/* The overlay */
+.viewer {
+  --pull: 0;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--stage) calc((0.9 - var(--pull) * 0.75) * 100%), transparent);
+}
+.viewer::backdrop {
+  background: transparent;
+}
+.viewer[open] {
+  animation: fade-in var(--duration) var(--ease-out);
+}
+.viewer.is-closing {
+  animation: fade-out var(--duration) var(--ease-in-out) forwards;
+}
+.viewer-stage {
+  position: absolute;
+  inset: var(--space-7) 96px;
+  display: grid;
+  place-items: center;
+}
+/* Desktop and tablet: the card hugs the artwork, so the space around it is backdrop
+   (a click there closes). The details panel takes the image's height and scrolls;
+   size containment keeps it from stretching the card. */
+@media (min-width: 768px) {
+  .viewer .viewer-frame {
+    --viewer-panel: 380px;
+    grid-template-columns: auto minmax(300px, var(--viewer-panel));
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    min-height: min(100%, 560px);
+    max-height: 100%;
+    border: 0;
+    box-shadow: var(--shadow-lg);
+  }
+  .viewer .viewer-panel {
+    contain: size;
+  }
+  .viewer .viewer-error {
+    grid-template-columns: auto;
+    min-height: 0;
+  }
+  .viewer .viewer-media img {
+    width: auto;
+    height: auto;
+    max-width: calc(100vw - 192px - var(--viewer-panel));
+    max-height: calc(100dvh - 2 * var(--space-7));
+  }
+}
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .viewer .viewer-frame {
+    --viewer-panel: 300px;
+  }
+}
+.viewer .viewer-media {
+  min-height: 0;
+  background: var(--stage-media);
+}
+.viewer .enter {
+  animation: frame-in var(--duration-slow) var(--ease-out);
+}
+.viewer .enter-next {
+  animation: frame-from-right var(--duration-slow) var(--ease-out);
+}
+.viewer .enter-prev {
+  animation: frame-from-left var(--duration-slow) var(--ease-out);
+}
+@keyframes frame-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+@keyframes frame-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+}
+@keyframes frame-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-48px);
+  }
+}
+.viewer-close,
+.viewer-nav {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--stage-control);
+  color: var(--on-image);
+}
+.viewer-close:hover,
+.viewer-nav:hover {
+  background: var(--stage-control-hover);
+  color: var(--on-image);
+  transform: none;
+}
+.viewer-close {
+  top: var(--space-4);
+  right: var(--space-4);
+}
+.viewer-nav {
+  top: 50%;
+  width: 52px;
+  height: 52px;
+  margin-top: -26px;
+}
+.viewer-nav.prev {
+  left: var(--space-6);
+}
+.viewer-nav.next {
+  right: var(--space-6);
+}
+.viewer-nav:disabled {
+  opacity: 0.25;
+}
+.viewer-nav svg {
+  width: 26px;
+  height: 26px;
+}
+.viewer.is-loading .viewer-stage::after {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--stage-track);
+  border-top-color: var(--on-image);
+  border-radius: 50%;
+  animation: spin 800ms linear infinite;
+}
+.viewer-error {
+  display: grid;
+  place-items: center;
+  gap: var(--space-4);
+  width: auto;
+  height: auto;
+  padding: var(--space-8);
+  text-align: center;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (max-width: 767.98px) {
+  .viewer {
+    --peek: calc(132px + var(--safe-bottom));
+    background: color-mix(in srgb, var(--stage) calc((0.97 - var(--pull) * 0.8) * 100%), transparent);
+  }
+  .viewer-stage {
+    inset: 0;
+  }
+  .viewer .viewer-frame {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    max-height: none;
+    margin: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .viewer .viewer-media {
+    position: absolute;
+    inset: calc(var(--safe-top) + 60px) 0 var(--peek) 0;
+    background: transparent;
+    touch-action: none;
+  }
+  .viewer .viewer-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 86dvh;
+    padding: var(--space-6) var(--space-5)
+      calc(var(--safe-bottom) + var(--space-5));
+    border: 0;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    background: var(--surface);
+    overflow: hidden;
+    touch-action: none;
+    transform: translateY(calc(100% - var(--peek)));
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+  .viewer.is-expanded .viewer-panel {
+    transform: none;
+    overflow: auto;
+    touch-action: pan-y;
+  }
+  .viewer-handle {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .viewer-handle:hover {
+    background: transparent;
+    transform: none;
+  }
+  .viewer-handle::after {
+    content: "";
+    position: absolute;
+    top: 9px;
+    left: 50%;
+    width: 40px;
+    height: 5px;
+    margin-left: -20px;
+    border-radius: var(--radius-pill);
+    background: var(--line-strong);
+  }
+  .viewer-nav {
+    display: none;
+  }
+  .viewer-close {
+    top: calc(var(--safe-top) + 8px);
+    right: 8px;
+  }
+}
+
+/* Book artwork details, shared by the overlay and permalink. */
+.artwork-permalink {
+  padding-block: 24px;
+}
+.artwork-permalink > .book-back {
+  display: inline-block;
+  font-size: 13px;
+  margin-bottom: 20px;
+  color: var(--muted);
+}
+.viewer-book {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 20px;
+  margin-bottom: 22px;
+}
+.viewer-book img {
+  width: 36px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 3px;
+  flex: none;
+}
+.viewer-book strong,
+.viewer-book small {
+  display: block;
+}
+.viewer-book strong {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  line-height: 1.1;
+  font-weight: 400;
+}
+.viewer-book small {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.viewer-byline {
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+.viewer-byline > :is(a, span) {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--ink);
+}
+.viewer-byline small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.viewer-description {
+  font-size: 15px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+.viewer-date {
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 16px 0;
+}
+.viewer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.viewer-actions form {
+  margin: 0;
+}
+.viewer-actions button,
+.viewer-actions .btn {
+  font-size: 12px;
+  min-height: 44px;
+  padding: 8px 12px;
+}
+.viewer-actions > a:not(.btn) {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 10px;
+}
+.viewer-actions [aria-pressed="true"] {
+  background: var(--accent-wash);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.viewer-neighbours {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin: 20px 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.viewer-comments h2 {
+  font-family: var(--font-serif);
+  font-size: 27px;
+  margin: 20px 0;
+}
+.viewer-comments h2 span {
+  font: 12px var(--font-sans);
+  color: var(--muted);
+  margin-left: 5px;
+}
+.viewer-comments > .muted {
+  font-size: 13px;
+}
+.viewer-comment {
+  margin: 22px 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+  display: flow-root;
+}
+.comment-author {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+}
+.viewer-comment > time {
+  font-size: 10px;
+  color: var(--muted);
+  display: block;
+  margin: 6px 0;
+}
+.viewer-comment > p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 10px 0;
+}
+.comment-actions {
+  display: flex;
+  gap: 16px;
+  align-items: start;
+  font-size: 11px;
+  color: var(--muted);
+}
+.comment-actions button {
+  font-size: 11px;
+  padding: 0;
+  min-height: 44px;
+}
+.comment-actions summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.comment-compose label {
+  font-size: 12px;
+}
+.comment-compose button {
+  font-size: 12px;
+  min-height: 44px;
+}
+.comment-prompt {
+  font-size: 13px;
+  padding: 16px;
+  background: var(--accent-wash);
+  border-radius: var(--radius-md);
+}
+.viewer-panel .chiplist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.viewer-panel .tag {
+  font-size: 10px;
+}
+.viewer .viewer-neighbours {
+  display: none;
+}
+.viewer-comments textarea {
+  width: 100%;
+}
+@media (max-width: 767.98px) {
+  .viewer .viewer-book {
+    padding: 4px 0 14px;
+    margin-bottom: 16px;
+  }
+  .viewer .viewer-book img {
+    width: 28px;
+    height: 42px;
+  }
+  .viewer .viewer-book strong {
+    font-size: 22px;
+  }
+  .viewer .viewer-panel {
+    padding-top: 32px;
+  }
+  .viewer .viewer-byline {
+    margin-bottom: 12px;
+  }
+  .viewer.is-expanded .viewer-panel {
+    touch-action: pan-y;
+  }
+  .artwork-permalink {
+    padding-top: 12px;
+  }
+  .artwork-permalink .viewer-media {
+    background: var(--stage-media);
+  }
+  .artwork-permalink .viewer-media img {
+    max-height: 70vh;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .viewer {
+    background: color-mix(in srgb, var(--stage-media) calc((1 - var(--pull) * 0.75) * 100%), transparent);
+  }
+}

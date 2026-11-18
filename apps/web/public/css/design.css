@@ -1,0 +1,74 @@
+/* The moderator design reference page. */
+.design .section > h2 {
+  margin-bottom: var(--space-6);
+}
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: var(--space-4);
+}
+.swatch {
+  display: grid;
+  gap: 4px;
+  font-size: var(--text-sm);
+}
+.swatch span {
+  height: 64px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.swatch.wide {
+  grid-column: span 2;
+}
+.swatch small {
+  font-size: var(--text-xs);
+}
+.type-hero {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-hero);
+  font-weight: var(--weight-strong);
+  letter-spacing: var(--tracking-display);
+  line-height: 1.06;
+}
+.design .section h1,
+.design .section h3 {
+  margin-bottom: var(--space-3);
+}
+.type-serif {
+  font-size: 34px;
+  font-style: italic;
+}
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: var(--space-2);
+}
+.icon-grid span {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: var(--space-3) var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.icon-grid small {
+  font-size: var(--text-2xs);
+}
+.design-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-5);
+  align-items: start;
+}
+.design-row > * {
+  margin: 0;
+}
+.design-byline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.design-byline > div {
+  display: grid;
+  line-height: 1.4;
+}

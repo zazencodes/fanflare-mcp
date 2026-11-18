@@ -1,0 +1,30 @@
+{
+  "name": "fanflare-mcp",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "workspaces": ["packages/contracts"],
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "dev": "wrangler dev --config apps/web/wrangler.json --ip 127.0.0.1 --port 8787",
+    "check": "tsc --noEmit",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@better-auth/mcp": "^1.7.20",
+    "@better-auth/oauth-provider": "^1.7.20",
+    "@fanflare/contracts": "*",
+    "@modelcontextprotocol/server": "^2.4.0",
+    "better-auth": "^1.7.20",
+    "hono": "^4.13.17",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261110.1",
+    "@modelcontextprotocol/client": "^2.4.0",
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.160.0"
+  }
+}

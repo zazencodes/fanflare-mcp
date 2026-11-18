@@ -1,0 +1,6 @@
+ALTER TABLE contributions ADD COLUMN subject_kind TEXT NOT NULL DEFAULT 'character' CHECK(subject_kind IN ('character','place'));
+CREATE TABLE context_suppressions(book TEXT NOT NULL REFERENCES books,subject TEXT NOT NULL,subject_id TEXT,detail TEXT NOT NULL,created INTEGER NOT NULL,PRIMARY KEY(book,subject,detail));
+CREATE TABLE context_suppressed_keys(book TEXT NOT NULL REFERENCES books,claim_key TEXT NOT NULL,created INTEGER NOT NULL,PRIMARY KEY(book,claim_key));
+CREATE TABLE context_report_claims(report TEXT PRIMARY KEY REFERENCES reports,book TEXT NOT NULL REFERENCES books,subject TEXT NOT NULL,subject_id TEXT,detail TEXT NOT NULL,claim_key TEXT);
+INSERT OR IGNORE INTO context_suppressions(book,subject,subject_id,detail,created) SELECT f.book,COALESCE(c.name,''),f.character,f.detail,0 FROM facts f LEFT JOIN characters c ON c.id=f.character LEFT JOIN contributions u ON u.id=f.contribution WHERE f.active=0 AND (f.contribution IS NULL OR u.state='accepted');
+INSERT OR IGNORE INTO context_suppressed_keys(book,claim_key,created) SELECT f.book,substr(f.id,instr(f.id,':fact:')+6),0 FROM facts f LEFT JOIN contributions u ON u.id=f.contribution WHERE f.active=0 AND (f.contribution IS NULL OR u.state='accepted') AND instr(f.id,':fact:')>0;

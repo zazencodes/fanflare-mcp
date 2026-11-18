@@ -1,0 +1,264 @@
+/* Canvas: ordered masonry of artwork tiles, the tile itself and the endless loader.
+   Without JavaScript the canvas is an ordered grid; masonry.js adds .is-placed. */
+.canvas {
+  --canvas-cols: 4;
+  --canvas-gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(var(--canvas-cols), minmax(0, 1fr));
+  gap: var(--canvas-gap);
+  align-items: start;
+  margin-block: var(--space-6);
+}
+@media (min-width: 1360px) {
+  .canvas {
+    --canvas-cols: 5;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .canvas {
+    --canvas-cols: 3;
+    --canvas-gap: 14px;
+  }
+}
+@media (max-width: 767.98px) {
+  .canvas {
+    --canvas-cols: 2;
+    --canvas-gap: 3px;
+    margin-inline: calc(-1 * var(--gutter));
+  }
+}
+.canvas.is-placed {
+  display: block;
+  position: relative;
+}
+.canvas.is-placed > .tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.canvas.is-animated > .tile {
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+/* Tile */
+.tile {
+  position: relative;
+  min-width: 0;
+}
+.tile-media {
+  display: block;
+  aspect-ratio: var(--tile-ratio, 4 / 5);
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--surface-tint);
+}
+.tile-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+.tile-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+.tile-meta a,
+.tile-meta button {
+  pointer-events: auto;
+}
+.tile-artist {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: var(--weight-strong);
+  text-decoration: none;
+  color: inherit;
+}
+.tile-artist > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tile-actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.tile-actions form {
+  display: contents;
+}
+.tile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 32px;
+  min-width: 32px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: inherit;
+  font: var(--weight-strong) 12px / 1 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+}
+button.tile-btn:hover {
+  background: var(--ink-wash);
+  color: inherit;
+  transform: none;
+}
+.tile-btn svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--duration) var(--ease-spring);
+}
+.tile-btn[aria-pressed="true"] {
+  color: var(--accent);
+}
+.tile-btn[aria-pressed="true"] svg {
+  fill: currentColor;
+}
+.tile-btn.fav[aria-pressed="true"] {
+  color: var(--favorite);
+}
+button.tile-btn:active svg {
+  transform: scale(0.8);
+}
+.tile.is-fresh .tile-media {
+  animation: tile-fresh 2400ms var(--ease-out);
+}
+@keyframes tile-fresh {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+    box-shadow:
+      0 0 0 3px var(--paper),
+      0 0 0 5px var(--accent);
+  }
+  30% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+  45% {
+    transform: scale(1);
+  }
+  70% {
+    box-shadow:
+      0 0 0 3px var(--paper),
+      0 0 0 5px var(--accent);
+  }
+  100% {
+    box-shadow:
+      0 0 0 3px var(--paper),
+      0 0 0 5px transparent;
+  }
+}
+
+/* Desktop hover: credit and actions appear over the image */
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .tile-meta {
+    position: absolute;
+    z-index: var(--z-tile-meta);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--space-8) var(--space-2) var(--space-2) var(--space-3);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    background: var(--gradient-image-fade);
+    color: var(--on-image);
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity var(--duration) var(--ease-out),
+      transform var(--duration) var(--ease-out);
+  }
+  .tile:hover .tile-meta,
+  .tile:focus-within .tile-meta {
+    opacity: 1;
+    transform: none;
+  }
+  .tile:hover .tile-media img {
+    transform: scale(1.035);
+  }
+  .tile-meta .tile-artist:hover {
+    color: var(--on-image);
+    text-decoration: underline;
+  }
+  .tile-meta button.tile-btn:hover {
+    background: var(--image-control);
+  }
+  .tile-meta .tile-btn[aria-pressed="true"] {
+    color: var(--on-image-accent);
+  }
+  .tile-meta .tile-btn.fav[aria-pressed="true"] {
+    color: var(--on-image-favorite);
+  }
+}
+
+/* Touch and mobile: a small footer under the image */
+@media (max-width: 767.98px), (hover: none), (pointer: coarse) {
+  .tile-meta {
+    min-height: 44px;
+    padding: 0 2px 0 8px;
+    background: var(--surface);
+  }
+  .tile-artist {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .tile-btn {
+    min-height: 44px;
+    min-width: 44px;
+    justify-content: center;
+  }
+}
+@media (max-width: 767.98px) {
+  .tile-media {
+    border-radius: 2px;
+  }
+  .tile-meta {
+    padding-left: 6px;
+  }
+  .tile-artist {
+    font-size: var(--text-xs);
+  }
+}
+
+/* Endless loader */
+.endless {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-7) var(--space-4);
+}
+.endless-end {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+.endless-spinner {
+  display: none;
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 800ms linear infinite;
+}
+.endless.is-loading .endless-spinner {
+  display: block;
+}
+.endless.is-loading [data-endless-next] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

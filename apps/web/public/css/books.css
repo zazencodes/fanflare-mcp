@@ -1,0 +1,141 @@
+.catalog-toolbar {
+  display: flex;
+  align-items: end;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.catalog-toolbar label {
+  min-width: 180px;
+}
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 36px 24px;
+  margin: 28px 0 48px;
+}
+.catalog-book {
+  min-width: 0;
+  color: var(--ink);
+  text-decoration: none;
+}
+.catalog-cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  background: var(--surface-tint);
+  border-radius: 4px 10px 10px 4px;
+  box-shadow: var(--shadow-cover);
+}
+.catalog-copy h3 {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  margin: 14px 0 5px;
+}
+.catalog-copy p {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 6px;
+}
+.catalog-copy small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.catalog-book:hover h3 {
+  color: var(--accent);
+}
+.catalog-rows .catalog-book {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.catalog-rows .catalog-cover {
+  width: 46px;
+  height: 69px;
+  flex-shrink: 0;
+}
+.catalog-rows .catalog-copy {
+  flex: 1;
+}
+.catalog-rows h3 {
+  margin: 0 0 3px;
+}
+.art-stack {
+  display: flex;
+  flex-direction: row-reverse;
+  padding-left: 12px;
+}
+.art-stack img {
+  object-fit: cover;
+  border-radius: 6px;
+  margin-left: -12px;
+  border: 2px solid var(--paper);
+}
+.list-method {
+  max-width: 760px;
+  padding: 24px;
+  background: var(--surface-sunken);
+  border-left: 3px solid var(--accent);
+  margin-bottom: 40px;
+}
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .catalog-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767.98px) {
+  .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 20px;
+  }
+  .catalog-toolbar {
+    gap: 12px;
+  }
+  .catalog-toolbar label {
+    min-width: 0;
+    flex: 1 1 130px;
+  }
+  .catalog-toolbar button {
+    width: 100%;
+  }
+  .popular-list .catalog-rows {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+    padding: 8px 0 18px;
+  }
+  .popular-list .catalog-book {
+    display: block;
+    flex: 0 0 126px;
+    border: 0;
+    padding: 0;
+    scroll-snap-align: start;
+  }
+  .popular-list .catalog-cover {
+    width: 126px;
+    height: 189px;
+  }
+  .popular-list .catalog-copy h3 {
+    margin-top: 12px;
+  }
+  .popular-list .art-preview {
+    display: none;
+  }
+}
+.catalog-cover > .cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.catalog-cover > .cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

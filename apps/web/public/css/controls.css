@@ -1,0 +1,199 @@
+/* Shared list controls, loaded with the shell: the picker menu (/js/picker.js) and the
+   in-place swap region (/js/swap.js). See docs/community/DESIGN.md. */
+
+/* Picker: a native select without scripts; a button and styled listbox with them. */
+.picker {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.picker-label {
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+.picker-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 var(--space-3) 0 var(--space-4);
+  border: 1px solid var(--field-line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--text-ui);
+  font-weight: var(--weight-regular);
+  text-align: left;
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+  transition:
+    border-color var(--duration-fast),
+    box-shadow var(--duration-fast);
+}
+.picker-button:hover,
+.picker-button:active {
+  border-color: var(--muted);
+  background: var(--surface);
+  color: var(--ink);
+  transform: none;
+}
+.picker-button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.picker-button[aria-expanded="true"] {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-focus);
+}
+.picker-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.picker-button svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  transition: transform var(--duration) var(--ease-out);
+}
+.picker-button[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.picker-panel {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: max-content;
+  max-width: min(420px, calc(100vw - 24px));
+  padding: var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-lg);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.picker-panel:popover-open {
+  display: flex;
+  flex-direction: column;
+  animation: picker-in var(--duration) var(--ease-out);
+}
+.picker-panel::backdrop {
+  background: transparent;
+}
+@keyframes picker-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+.picker-title {
+  display: none;
+}
+.picker-search {
+  flex: none;
+  margin-bottom: var(--space-2);
+}
+.picker-status {
+  margin: 0 var(--space-3) var(--space-2);
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+.picker-status:empty {
+  display: none;
+}
+.picker-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  outline: none;
+}
+.picker-list [role="option"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 40px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-ui);
+  line-height: var(--leading-snug);
+  cursor: pointer;
+  user-select: none;
+}
+.picker-list [role="option"].is-active {
+  background: var(--surface-hover);
+}
+.picker-list:focus-visible [role="option"].is-active {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+.picker-list [role="option"][aria-selected="true"] {
+  color: var(--accent);
+  font-weight: var(--weight-strong);
+  background: var(--accent-wash);
+}
+.picker-list [role="option"] svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  visibility: hidden;
+}
+.picker-list [role="option"][aria-selected="true"] svg {
+  visibility: visible;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .picker-list [role="option"] {
+    min-height: var(--tap);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .picker-panel {
+    inset: auto 0 0 0;
+    width: 100%;
+    max-width: none;
+    max-height: 72dvh;
+    padding: var(--space-5) var(--space-3)
+      calc(var(--space-4) + var(--safe-bottom));
+    border: 0;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  }
+  .picker-panel:popover-open {
+    animation: picker-sheet-up var(--duration-slow) var(--ease-out);
+  }
+  .picker-panel::backdrop {
+    background: var(--scrim);
+  }
+  .picker-title {
+    display: block;
+    margin: 0 var(--space-3) var(--space-3);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-strong);
+    letter-spacing: var(--tracking-title);
+  }
+  .picker-list [role="option"] {
+    min-height: var(--tap);
+    font-size: var(--text-base);
+  }
+}
+@keyframes picker-sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+/* In-place swap region: while an uncached view loads, the old list fades back. */
+.swap-region.is-swapping [data-endless],
+.swap-region.is-swapping .canvas,
+.swap-region.is-swapping .catalog-grid {
+  opacity: 0.45;
+  transition: opacity var(--duration) var(--ease-out) 120ms;
+}

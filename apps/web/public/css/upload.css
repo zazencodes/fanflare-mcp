@@ -1,0 +1,117 @@
+.upload-form {
+  gap: 20px;
+}
+.upload-picker {
+  border: 1px dashed var(--line-strong);
+  background: var(--gradient-soft);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  font-size: 20px;
+}
+.upload-picker span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.upload-picker input {
+  font-size: 12px;
+  width: 100%;
+  max-width: 310px;
+  background: var(--surface);
+}
+.upload-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 350px;
+  width: auto;
+  height: auto;
+  margin: 20px auto;
+  border-radius: var(--radius-md);
+  object-fit: contain;
+}
+.upload-preview[hidden] {
+  display: none;
+}
+.upload-form label small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.upload-form textarea {
+  min-height: 100px;
+}
+.upload-characters {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.upload-characters legend {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.upload-characters label {
+  display: flex;
+  gap: 6px;
+  font-size: 13px;
+  align-items: center;
+}
+.upload-characters input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+.upload-error {
+  color: var(--danger);
+  font-size: 13px;
+  white-space: pre-wrap;
+}
+.upload-error:empty {
+  display: none;
+}
+.upload-review h3 {
+  font-family: var(--font-serif);
+  font-size: 34px;
+  margin: 10px 0;
+}
+.upload-review > a {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 13px;
+}
+.upload-review form button {
+  width: 100%;
+}
+.upload-review .upload-preview {
+  max-height: 46vh;
+}
+.upload-review > p {
+  font-size: 14px;
+}
+.upload-form > button {
+  width: 100%;
+}
+@media (max-width: 767.98px) {
+  #upload-artwork .dialog-body {
+    padding: 20px 22px calc(24px + var(--safe-bottom));
+  }
+  .upload-form .grid2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .upload-picker {
+    padding: 20px;
+  }
+  .upload-preview {
+    max-height: 260px;
+  }
+  .upload-review .upload-preview {
+    max-height: 38vh;
+  }
+}

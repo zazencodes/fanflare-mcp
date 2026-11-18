@@ -1,0 +1,115 @@
+/* Reading desk and moderator pages: account, review, moderation and research. */
+.narrow > h2,
+.narrow > section > h2 {
+  margin: var(--space-9) 0 var(--space-4);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--line);
+  font-size: var(--text-xl);
+  letter-spacing: var(--tracking-title);
+}
+.narrow > .heading + h2,
+.narrow > .heading + p + h2 {
+  margin-top: var(--space-4);
+}
+.narrow > form.actions,
+.narrow > article,
+.library > article {
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+  margin: var(--space-2) 0;
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  font-size: var(--text-ui);
+}
+.narrow > form.actions p,
+.narrow > form.actions span {
+  margin: 0;
+}
+.narrow > form[method="post"]:not([class]) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--text-ui);
+}
+.narrow > form[method="post"]:not([class]) p {
+  margin: var(--space-3) 0;
+}
+.narrow > p > a,
+.panel a {
+  color: var(--accent);
+  font-weight: var(--weight-strong);
+  text-decoration: none;
+}
+.narrow > p > a:hover,
+.panel a:hover {
+  text-decoration: underline;
+}
+.narrow details {
+  margin: var(--space-3) 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.narrow details > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 52px;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--text-ui);
+  font-weight: var(--weight-strong);
+  cursor: pointer;
+  list-style: none;
+}
+.narrow details > summary::-webkit-details-marker {
+  display: none;
+}
+.narrow details > summary::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-left: auto;
+  border-right: 1.75px solid var(--muted);
+  border-bottom: 1.75px solid var(--muted);
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform var(--duration) var(--ease-out);
+}
+.narrow details[open] > summary {
+  border-bottom: 1px solid var(--line);
+}
+.narrow details[open] > summary::after {
+  transform: rotate(225deg) translate(-2px, 0);
+}
+.narrow details > :not(summary) {
+  margin-inline: var(--space-5);
+}
+.narrow details > form {
+  margin-block: var(--space-5);
+}
+.narrow details > pre {
+  max-height: 320px;
+  overflow: auto;
+}
+.narrow .panel h2 {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-xl);
+}
+.narrow .panel dl {
+  margin-bottom: 0;
+}
+@media (max-width: 767.98px) {
+  .narrow > form.actions,
+  .narrow > article,
+  .library > article {
+    padding: var(--space-3) var(--space-4);
+  }
+  .narrow details > :not(summary) {
+    margin-inline: var(--space-4);
+  }
+}
+.reported-comment {white-space: pre-wrap;overflow-wrap: anywhere;}
