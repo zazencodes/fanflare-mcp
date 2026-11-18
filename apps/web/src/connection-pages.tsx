@@ -118,26 +118,24 @@ connectionPages.get("/connect", (c) =>
         title="Connect an agent"
         sub="Bring Fanflare’s spoiler-bounded book context to your image-capable reader."
       />
-      <h2>Try it in ChatGPT</h2>
+      <h2>Connect ChatGPT to Fanflare</h2>
+      <p>Copy this hosted MCP address into ChatGPT.</p>
+      <p>
+        <code>https://fanflare.art/mcp</code>
+      </p>
       <p>
         On ChatGPT web, open Plugins, select + and choose Add custom MCP server.
-        Enter https://fanflare.art/mcp and choose No authentication to look up
-        books. Install Fanflare, then look for @Fanflare in the same workspace
-        on your phone.
+        Enter the address above and choose No authentication to look up books.
+        Install Fanflare, then look for @Fanflare in the same workspace on your
+        phone.
       </p>
       <p>
         <a href="/mcp-guide.md">
           Read the setup guide and try the Alice example
         </a>
       </p>
-      <h2>Remote MCP address</h2>
-      <p>
-        <code>{c.env.ORIGIN}/mcp</code>
-      </p>
+      <h2>Try a scene</h2>
       <ol>
-        <li>
-          Add the address to your client as a remote Streamable HTTP MCP server.
-        </li>
         <li>
           Attach your page photo to the client and ask, “Illustrate the scene on
           this page using Fanflare.” Your agent can search the library before
@@ -148,6 +146,15 @@ connectionPages.get("/connect", (c) =>
           exact picture and credit, then choose Publish.
         </li>
       </ol>
+      {c.env.ORIGIN !== "https://fanflare.art" && (
+        <>
+          <h2>Connect a client to this installation</h2>
+          <p>
+            For a Streamable HTTP client running on the same computer as this
+            server, use <code>{c.env.ORIGIN}/mcp</code>.
+          </p>
+        </>
+      )}
       <h2>Image transfer</h2>
       <p>
         Verified with the official TypeScript MCP client and a newly generated

@@ -8,6 +8,12 @@ const endpoint = new URL("http://127.0.0.1:8787/mcp");
 const client = new Client({ name: "fanflare-local-check", version: "1" });
 await client.connect(new StreamableHTTPClientTransport(endpoint));
 try {
+  const connectPage = await (await fetch(new URL("/connect", endpoint))).text();
+  assert.equal(
+    connectPage.match(/<code>([^<]+)<\/code>/)?.[1],
+    "https://fanflare.art/mcp",
+  );
+  assert.ok(connectPage.includes("<code>" + endpoint.href + "</code>"));
   const { tools } = await client.listTools();
   assert.ok(tools.some((tool) => tool.name === "stage_image"));
   const call = async (name, args) => {
